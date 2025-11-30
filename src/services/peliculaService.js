@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const URL_READ = "http://localhost:8080/api/v1/pelicula/findAll";
-const URL_CREATE = "http://localhost:8080/api/v1/pelicula/save";
-const URL_READ_NAME = "http://localhost:8080/api/v1/pelicula/findName";
-const URL_UPDATE = "http://localhost:8080/api/v1/pelicula/update";
-const URL_DELETE = "http://localhost:8080/api/v1/pelicula/delete";
+const URL_READ = import.meta.env.VITE_API_URI_READ;
+const URL_CREATE = import.meta.env.VITE_API_URI_CREATE;
+const URL_READ_NAME = import.meta.env.VITE_API_URI_READ_NAME;
+const URL_UPDATE = import.meta.env.VITE_API_URI_UPDATE;
+const URL_DELETE = import.meta.env.VITE_API_URI_DELETE;
 
 const readPelicula = async () => {
     const response = await axios.get(URL_READ);
