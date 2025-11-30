@@ -9,7 +9,7 @@ const Input = ({ name, label, type, handleInput, value }) => {
         type={type}
         name={name}
         onChange={handleInput}
-        value={value[name]}  // ← Ya no necesitas el displayValue
+        value={value[name]}
       />
     </div>
   )
