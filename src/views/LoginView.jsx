@@ -14,7 +14,6 @@ export default function LoginView({ onLoginSuccess }) {
 
     try {
       const token = await loginUser(correo, password);
-      console.log("Token recibido:", token);
 
       const userAuth = { token };
       localStorage.setItem('userAuth', JSON.stringify(userAuth));

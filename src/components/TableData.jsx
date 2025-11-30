@@ -1,5 +1,3 @@
-import React from 'react'
-
 function TableData(props) {
     const { data, headers, actions } = props;
     return (
