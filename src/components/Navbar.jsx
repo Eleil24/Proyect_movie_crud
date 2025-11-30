@@ -1,10 +1,25 @@
 import { Link } from "react-router-dom";
 import { Film } from "lucide-react";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
+
   const handleLogout = () => {
-    localStorage.removeItem('userAuth');
-    window.location.href = '/';
+    Swal.fire({
+      title: "¿Cerrar sesión?",
+      text: "Tu sesión actual se cerrará.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, cerrar sesión",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("userAuth");
+        window.location.href = "/";
+      }
+    });
   };
 
   return (

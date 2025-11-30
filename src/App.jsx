@@ -7,6 +7,8 @@ import Navbar from "./components/Navbar";
 import UpdatePeliculaView from "./views/UpdatePeliculaView";
 import './services/axiosConfig';
 
+import { Toaster } from "react-hot-toast";
+
 function App() {
   const [userAuth, setUserAuth] = useState(null);
 
@@ -18,11 +20,13 @@ function App() {
   }, []);
 
   if (!userAuth) {
+    <Toaster position="top-right" /> 
     return <LoginView onLoginSuccess={setUserAuth} />;
   }
 
   return (
     <BrowserRouter>
+      <Toaster position="top-right" /> 
       <Navbar />
       <Routes>
         <Route path="/" element={<HomeView userAuth={userAuth} />} />

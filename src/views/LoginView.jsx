@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { loginUser } from "../services/authService";
 import { Mail, Lock, Clapperboard} from "lucide-react";
+import toast from "react-hot-toast";
+
 
 export default function LoginView({ onLoginSuccess }) {
 
@@ -14,23 +16,16 @@ export default function LoginView({ onLoginSuccess }) {
       const token = await loginUser(correo, password);
       console.log("Token recibido:", token);
 
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      console.log("Payload del token:", payload);
-
-      // const now = Date.now();
-      // const expira = payload.exp * 1000;
-      // const minutosRestantes = (expira - now) / 1000 / 60;
-
-      // console.log("Token expira en:", minutosRestantes.toFixed(2), "minutos");
-      // console.log("Hora actual:", new Date(now).toLocaleTimeString());
-      // console.log("Token expira a las:", new Date(expira).toLocaleTimeString());
-
       const userAuth = { token };
       localStorage.setItem('userAuth', JSON.stringify(userAuth));
 
+      toast.success(`Bienvenido ${correo}`, {
+        duration: 2500
+      });
       onLoginSuccess(userAuth);
     } catch (error) {
       setErrorMsg(error);
+      toast.error("Correo o contraseña incorrectos");
     }
   }
 
@@ -100,43 +95,5 @@ export default function LoginView({ onLoginSuccess }) {
       </div>
     </div>
   );
-
-
-  // return (
-  //   <div className="min-h-screen bg-base-200 flex justify-center items-center p-4">
-  //     <div className="card w-96 bg-base-100 shadow-xl p-6">
-
-  //       <h2 className="text-2xl font-bold text-center mb-4">Iniciar Sesión</h2>
-
-  //       {errorMsg && (
-  //         <p className="text-red-500 text-center mb-3">{errorMsg}</p>
-  //       )}
-
-  //       <form onSubmit={handleSubmit} className="space-y-4">
-
-  //         <input
-  //           type="text"
-  //           placeholder="Correo"
-  //           className="input input-bordered w-full"
-  //           value={correo}
-  //           onChange={e => setCorreo(e.target.value)}
-  //         />
-
-  //         <input
-  //           type="password"
-  //           placeholder="Contraseña"
-  //           className="input input-bordered w-full"
-  //           value={password}
-  //           onChange={e => setPassword(e.target.value)}
-  //         />
-
-  //         <button className="btn btn-primary w-full">
-  //           Ingresar
-  //         </button>
-  //       </form>
-
-  //     </div>
-  //   </div>
-  // );
 }
 
