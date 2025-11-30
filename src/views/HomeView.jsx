@@ -82,17 +82,24 @@ const HomeView = ({ userAuth }) => {
         }
     ]
 
-
     useEffect(() => {
         const getPeliculas = async () => {
             try {
                 const data = await readPelicula();
-                // console.log(data);
-                setPelicula(data);
+
+                const dataFormateada = data.map(p => ({
+                    ...p,
+                    categorias: Array.isArray(p.categorias)
+                        ? p.categorias.join(", ")
+                        : p.categorias || ""
+                }));
+
+                setPelicula(dataFormateada);
             } catch (error) {
                 console.error("Error fetching peliculas:", error);
             }
-        }
+        };
+
         getPeliculas();
     }, []);
 
