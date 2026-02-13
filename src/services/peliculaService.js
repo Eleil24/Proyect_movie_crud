@@ -1,13 +1,18 @@
-import axios from "axios";
+import axios from "./axiosConfig";
 
-const URL_READ = import.meta.env.VITE_API_URI_READ;
-const URL_CREATE = import.meta.env.VITE_API_URI_CREATE;
-const URL_READ_NAME = import.meta.env.VITE_API_URI_READ_NAME;
-const URL_UPDATE = import.meta.env.VITE_API_URI_UPDATE;
-const URL_DELETE = import.meta.env.VITE_API_URI_DELETE;
+const BASE_URL = import.meta.env.VITE_API_URI;
 
-const readPelicula = async () => {
-  const response = await axios.get(URL_READ);
+const readPelicula = async ({ page = 1, size = 10, nombre = "", anioEstreno = "", categoria = "" } = {}) => {
+  const params = new URLSearchParams();
+  params.append('page', page);
+  params.append('size', size);
+  params.append('direccion', 'ASC');
+
+  if (nombre) params.append('nombre', nombre);
+  if (anioEstreno) params.append('anioEstreno', anioEstreno);
+  if (categoria) params.append('categoria', categoria);
+
+  const response = await axios.get(`${BASE_URL}/find?${params.toString()}`);
   if (response.status !== 200) {
     throw new Error("Error al obtener las peliculas");
   }
@@ -15,16 +20,24 @@ const readPelicula = async () => {
 }
 
 const readPeliculaByName = async (name) => {
-  const response = await axios.get(`${URL_READ_NAME}?nombre=${encodeURIComponent(name)}`);
+  const response = await axios.get(`${BASE_URL}/find?nombre=${encodeURIComponent(name)}`);
   if (response.status !== 200) {
     throw new Error("Error al obtener los datos")
   }
-  return response.data[0];
+  return Array.isArray(response.data) && response.data.length > 0 ? response.data[0] : null;
 }
 
-const updatePelicula = async (nombreOriginal, peliculaEditada) => {
+const readPeliculaById = async (id) => {
+  const response = await axios.get(`${BASE_URL}/detail/${id}`);
+  if (response.status !== 200) {
+    throw new Error("Error al obtener los datos de la película");
+  }
+  return response.data;
+}
+
+const updatePelicula = async (id, peliculaEditada) => {
   const response = await axios.put(
-    `${URL_UPDATE}?nombre=${encodeURIComponent(nombreOriginal)}`,
+    `${BASE_URL}/update/${id}`,
     peliculaEditada
   );
   if (response.status !== 200) {
@@ -34,19 +47,64 @@ const updatePelicula = async (nombreOriginal, peliculaEditada) => {
 }
 
 const createPelicula = async (newPelicula) => {
-  const response = await axios.post(URL_CREATE, newPelicula);
+  const response = await axios.post(`${BASE_URL}/save`, newPelicula);
   if (response.status !== 200 && response.status !== 201) {
     throw new Error("Error al crear la pelicula")
   }
   return response.data;
 }
 
-const deletePelicula = async (nombre) => {
-  const response = await axios.delete(`${URL_DELETE}?nombre=${encodeURIComponent(nombre)}`);
+const deletePelicula = async (id) => {
+  const response = await axios.delete(`${BASE_URL}/delete/${id}`);
   if (response.status !== 200) {
     throw new Error("Error al eliminar la película");
   }
   return response.data;
 }
 
-export { readPelicula, createPelicula, readPeliculaByName, updatePelicula, deletePelicula };
+const findAllRate = async () => {
+  const response = await axios.get(`${BASE_URL}/findAllRate`);
+  if (response.status !== 200) {
+    throw new Error("Error al obtener las peliculas mejor calificadas");
+  }
+  return response.data;
+}
+
+const RATE_URL = BASE_URL.replace("/pelicula", "/rate");
+
+const saveRate = async ({ idPelicula, rate }) => {
+  const response = await axios.post(`${RATE_URL}/save`, { idPelicula, rate });
+  if (response.status !== 200 && response.status !== 201) {
+    throw new Error("Error al guardar la calificación");
+  }
+  return response.data;
+}
+
+const deleteRate = async (idPelicula) => {
+  const response = await axios.delete(`${RATE_URL}/delete/${idPelicula}`);
+  if (response.status !== 200) {
+    throw new Error("Error al eliminar la calificación");
+  }
+  return response.data;
+}
+
+const getAllRatings = async () => {
+  const response = await axios.get(`${RATE_URL}/findAll`);
+  if (response.status !== 200) {
+    throw new Error("Error al obtener las calificaciones");
+  }
+  return response.data;
+}
+
+const deleteRatingAdmin = async (idPelicula, correo) => {
+  // console.log(`Attempting to delete rating for movie ${idPelicula} and user ${correo}`);
+  const response = await axios.delete(`${RATE_URL}/deleteAdmin`, {
+    params: { idPelicula, correo }
+  });
+  if (response.status !== 200) {
+    throw new Error("Error al eliminar la calificación");
+  }
+  return response.data;
+}
+
+export { readPelicula, createPelicula, readPeliculaByName, readPeliculaById, updatePelicula, deletePelicula, findAllRate, saveRate, deleteRate, getAllRatings, deleteRatingAdmin };
