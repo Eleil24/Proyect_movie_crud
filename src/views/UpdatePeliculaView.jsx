@@ -43,13 +43,11 @@ const UpdatePeliculaView = () => {
   const handleCategoriaChange = (nombreCategoria) => {
     const currentCategorias = [...pelicula.categorias];
     if (currentCategorias.includes(nombreCategoria)) {
-      // Si ya está, lo sacamos
       setPelicula({
         ...pelicula,
         categorias: currentCategorias.filter(c => c !== nombreCategoria)
       });
     } else {
-      // Si no está, lo agregamos
       setPelicula({
         ...pelicula,
         categorias: [...currentCategorias, nombreCategoria]
@@ -227,7 +225,7 @@ const UpdatePeliculaView = () => {
           )}
         </div>
 
-        <button className="btn btn-primary" type="submit">
+        <button className="btn btn-primary w-full md:w-auto" type="submit">
           Guardar Cambios
         </button>
       </form>
