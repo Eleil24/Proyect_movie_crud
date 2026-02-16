@@ -225,7 +225,7 @@ const UpdatePeliculaView = () => {
           )}
         </div>
 
-        <button className="btn btn-primary" type="submit">
+        <button className="btn btn-primary w-full md:w-auto" type="submit">
           Guardar Cambios
         </button>
       </form>
