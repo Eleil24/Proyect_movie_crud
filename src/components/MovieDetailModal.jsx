@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { saveRate, deleteRate } from "../services/peliculaService";
+import { saveRate, deleteRate } from "../services/rateService";
 import Swal from 'sweetalert2';
 
 const MovieDetailModal = ({ isOpen, onClose, movie, onUpdateSuccess }) => {

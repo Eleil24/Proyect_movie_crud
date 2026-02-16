@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { readPelicula, deletePelicula, getAllRatings, deleteRatingAdmin } from "../services/peliculaService";
+import { readPelicula, deletePelicula } from "../services/peliculaService";
+import { getAllRatings, deleteRatingAdmin } from "../services/rateService";
 import { getAllCategorias } from "../services/categoriaService";
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowModel, flexRender } from "@tanstack/react-table";
 import TableData from "../components/TableData";

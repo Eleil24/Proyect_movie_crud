@@ -70,41 +70,5 @@ const findAllRate = async () => {
   return response.data;
 }
 
-const RATE_URL = BASE_URL.replace("/pelicula", "/rate");
 
-const saveRate = async ({ idPelicula, rate }) => {
-  const response = await axios.post(`${RATE_URL}/save`, { idPelicula, rate });
-  if (response.status !== 200 && response.status !== 201) {
-    throw new Error("Error al guardar la calificación");
-  }
-  return response.data;
-}
-
-const deleteRate = async (idPelicula) => {
-  const response = await axios.delete(`${RATE_URL}/delete/${idPelicula}`);
-  if (response.status !== 200) {
-    throw new Error("Error al eliminar la calificación");
-  }
-  return response.data;
-}
-
-const getAllRatings = async () => {
-  const response = await axios.get(`${RATE_URL}/findAll`);
-  if (response.status !== 200) {
-    throw new Error("Error al obtener las calificaciones");
-  }
-  return response.data;
-}
-
-const deleteRatingAdmin = async (idPelicula, correo) => {
-  // console.log(`Attempting to delete rating for movie ${idPelicula} and user ${correo}`);
-  const response = await axios.delete(`${RATE_URL}/deleteAdmin`, {
-    params: { idPelicula, correo }
-  });
-  if (response.status !== 200) {
-    throw new Error("Error al eliminar la calificación");
-  }
-  return response.data;
-}
-
-export { readPelicula, createPelicula, readPeliculaByName, readPeliculaById, updatePelicula, deletePelicula, findAllRate, saveRate, deleteRate, getAllRatings, deleteRatingAdmin };
+export { readPelicula, createPelicula, readPeliculaByName, readPeliculaById, updatePelicula, deletePelicula, findAllRate };
